@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Estate - News</title>
+<title>4sale.com - News</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="The Estate Teplate">
+<meta name="description" content="4sale.com Teplate">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/bootstrap4/bootstrap.min.css')}}">
 <link href="{{url_for('static', filename='styles/bootstrap4/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
@@ -16,12 +16,12 @@
 <body>
 
 <div class="super_container">
-	
+
 	<!-- Home -->
 	<div class="home">
 		<!-- Image by: https://unsplash.com/@jbriscoe -->
 		<div class="home_background" style="background-image:url({{url_for('static', filename='images/news.jpg')}})"></div>
-		
+
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -57,7 +57,7 @@
 								</div>
 							</a>
 						</div>
-						
+
 						<!-- Main Navigation -->
 
 						<nav class="main_nav">
@@ -69,7 +69,7 @@
 								<li class="main_nav_item"><a href="contact.html">contact us</a></li>
 							</ul>
 						</nav>
-						
+
 						<!-- Log in/Register -->
                         {% if session['username'] %}
 						<a style="margin-right:10px;" href="logout">
@@ -89,7 +89,7 @@
 						    </div>
                         </a>
                         {% endif %}
-						
+
 						<!-- Hamburger -->
 
 						<div class="hamburger_container menu_mm">
@@ -156,7 +156,7 @@
 		</div>
 
 	</header>
-    
+
 <div class="container">
     <div class="row">
         <div class="col-lg-8 news_content_col">
@@ -166,7 +166,7 @@
             {% else %}
                 <div class="news_post_title"> Please sign in to start asking questions </div>
             {% endif %}
-            
+
             </div>
         </div>
     </div>
@@ -245,8 +245,8 @@
 								<li class="sidebar_list_item"><a href="#">Vacation Homes</a></li>
 							</ul>
 						</div>
-						
-						
+
+
 					</div>
 				</div>
 

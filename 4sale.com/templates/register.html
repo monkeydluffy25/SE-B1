@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Estate - Contact</title>
+<title>4sale.com - Contact</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="The Estate Teplate">
+<meta name="description" content="4sale.com Teplate">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/bootstrap4/bootstrap.min.css')}}">
 <link href="{{url_for('static', filename='plugins/fontawesome-free-5.0.1/css/fontawesome-all.css')}}" rel="stylesheet" type="text/css">
@@ -18,12 +18,12 @@
 <body onload="myFunction()">
 
 <div class="super_container">
-	
+
 	<!-- Home -->
 	<div class="home">
 		<!-- Image by: https://unsplash.com/@breather -->
 		<div class="home_background" style="background-image:url({{url_for('static', filename='images/contact.jpg')}})"></div>
-		
+
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -58,7 +58,7 @@
 								</div>
 							</a>
 						</div>
-						
+
 						<!-- Main Navigation -->
 
 						<nav class="main_nav">
@@ -70,14 +70,14 @@
 								<li class="main_nav_item"><a href="#">contact</a></li>
 							</ul>
 						</nav>
-						
+
 						<!-- Phone Home -->
                         <a href="login.html">
 						  <div class="phone_home text-center">
 							<span>Log In</span>
 						  </div>
                         </a>
-						
+
 						<!-- Hamburger -->
 
 						<div class="hamburger_container menu_mm">
@@ -150,7 +150,7 @@
 	<div class="contact">
 		<div class="container">
 			<div class="row">
-				
+
 				<div class="col-lg-6 contact_col" style="margin: auto auto">
 					<div class="estate_contact_form">
 						<div class="contact_title">Register</div>
@@ -163,7 +163,7 @@
                                 <input id="username" name="username" class="estate_input_field estate_contact_form_name" type="text" placeholder="Username" required="required" data-error="username is required.">
 								<input id="password" name="password" class="estate_input_field estate_contact_form_name" type="password" placeholder="Password" required="required" data-error="password is required." onkeyup="check()">
 								<input id="password2" name="password2" class="estate_input_field estate_contact_form_email" type="password" placeholder="Re enter Password" required="required" data-error="password is required." onkeyup="check()">
-                                <div id = "message"></div> 
+                                <div id = "message"></div>
                                 <button id="estate_contact_send_btn" type="submit" class="estate_contact_send_btn trans_200" value="Submit" style="margin-bottom:30px;">register</button>
 							</form>
 						</div>
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-</div>	
+</div>
 <script>
 
 let usernameTaken = false;
@@ -209,8 +209,8 @@ var check = function() {
         } else {
             document.getElementById('message').style.color = 'red';
             document.getElementById('message').innerHTML = 'Passwords do not matching';
-        }    
-        
+        }
+
     }
 
 function myFunction() {

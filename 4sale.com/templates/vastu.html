@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Estate - VASTU</title>
+<title>4sale.com - VASTU</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="The Estate Teplate">
+<meta name="description" content="4sale.com Teplate">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/bootstrap4/bootstrap.min.css')}}">
 <link href="{{url_for('static', filename='plugins/fontawesome-free-5.0.1/css/fontawesome-all.css')}}" rel="stylesheet" type="text/css">
@@ -18,12 +18,12 @@
 <body>
 
 <div class="super_container">
-	
+
 	<!-- Home -->
 	<div class="home">
 		<!-- Image by: https://unsplash.com/@breather -->
 		<div class="home_background" style="background-image:url({{url_for('static', filename='images/contact.jpg')}})"></div>
-		
+
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -55,7 +55,7 @@
 								</div>
 							</a>
 						</div>
-						
+
 						<!-- Main Navigation -->
 
 						<nav class="main_nav">
@@ -67,14 +67,14 @@
 								<li class="main_nav_item"><a href="contact.html">contact</a></li>
 							</ul>
 						</nav>
-						
+
 						<!-- Phone Home -->
                         <a href="register.html">
 						  <div class="phone_home text-center">
 							<span>Register</span>
 						  </div>
                         </a>
-						
+
 						<!-- Hamburger -->
 
 						<div class="hamburger_container menu_mm">
@@ -147,7 +147,7 @@
 	<div class="contact">
 		<div class="container">
 			<div class="row">
-				
+
 				<div class="col-lg-6 contact_col">
 					<div class="estate_contact_form">
 						<div class="contact_title">Evaluate Your House According to Vastu Shastra</div>
@@ -164,7 +164,7 @@
 							  <option value="2">South-West</option>
 							  <option value="1">North-East</option>
 							</select>
-							
+
 							<p>Location of Master Bedroom</p>
 							<select id="select2" onchange="showOptions(this)" required>
 							    <option value="">Select</option>
@@ -177,7 +177,7 @@
 							  <option value="2">South-East</option>
 							  <option value="1">North-East</option>
 							</select>
-							
+
 							<p>Location of bore well/underground tanks</p>
 							<select id="select3" onchange="showOptions(this)" required>
 							    <option value="">Select</option>
@@ -207,7 +207,7 @@
 							<p>Flooring level of the house</p>
 							<select id="select5" onchange="showOptions(this)" required>
 							    <option value="">Select</option>
-							  <option value="8">North-east side down   South-west side up	
+							  <option value="8">North-east side down   South-west side up
 </option>
 							  <option value="7">North-east side down   South side up</option>
 							  <option value="6">East side down   West side up</option>
@@ -215,7 +215,7 @@
 							  <option value="4">South-west side is up and  elevated than all other sides</option>
 							  <option value="3">North-west side is up and   Elevated than all other sides</option>
 							  <option value="2">Depression in the South-west/   South-east</option>
-							  <option value="1">North-east side is up   South-west side is down	
+							  <option value="1">North-east side is up   South-west side is down
 </option>
 							</select>
 
@@ -296,12 +296,12 @@
 							  <option value="2">The plot where the house is located is in a rectangular or square shape</option>
 							</select>
 
-							
-
-							
 
 
-							
+
+
+
+
 							<button id="estate_contact_send_btn" type="submit" class="estate_contact_send_btn trans_200" value="Submit" onclick="finalAnswer()">send</button>
 							<br>
 							<br>
@@ -345,12 +345,12 @@
 
 
 				</div>
-				
-				
+
+
 
 			</div>
 
-			
+
 <br>
 <b>Marks obtained</b>
 <br>
@@ -385,8 +385,8 @@ Run away from the house. The fate is awaiting there to pull you down. This house
 				console.log(s[s.selectedIndex].value)
 				var val = s[s.selectedIndex].value;
 				var id = s.id.split("t");
-				
-				var out = document.getElementById("out"+id[1]); 
+
+				var out = document.getElementById("out"+id[1]);
 				out.value = val;
 
 
@@ -396,7 +396,7 @@ Run away from the house. The fate is awaiting there to pull you down. This house
 				var final = 0;
 				for(var i=1; i<12; i++) {
 					var v = document.getElementById("out"+i).value
-					
+
 					final = final + Number(v);
 				}
 				console.log(final)
@@ -404,7 +404,7 @@ Run away from the house. The fate is awaiting there to pull you down. This house
 			}
 
 		</script>
-		
+
 </body>
 
 <footer class="footer">
@@ -419,7 +419,7 @@ Run away from the house. The fate is awaiting there to pull you down. This house
 							<a href="#">
 								<div class="logo">
 									<img src="{{url_for('static', filename='images/logo.png')}}" alt="">
-									<span>the estate</span>
+									<span>4sale.com</span>
 								</div>
 							</a>
 						</div>
