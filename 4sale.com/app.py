@@ -5,14 +5,17 @@ from collections import defaultdict
 import map
 import greencover 
 import os
+from flask_mail import Mail,Message
 import price
 from flask_dropzone import Dropzone
 from utils import *
-import filter
+from fil import *
+
 
 #basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
+# app configuration
 app.config.update(
     UPLOADED_PATH='static/images/properties',
     # Flask-Dropzone config:
@@ -24,11 +27,17 @@ app.config.update(
     DROPZONE_UPLOAD_ACTION='handle_upload',  # URL or endpoint
     DROPZONE_UPLOAD_BTN_ID='estate_contact_send_btn',
 )
-
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_USERNAME'] = '4.sale.real.estate.property@gmail.com'
+app.config['MAIL_PASSWORD'] = 'forsaleestate'
 app.config['SECRET_KEY'] = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
+mail=Mail(app)
 dropzone = Dropzone(app)
 
+# Handling main page
 @app.route('/')
 @app.route('/index.html', methods=['GET','POST'])
 def home_page():
@@ -41,14 +50,17 @@ def home_page():
     tags = db.cursor.fetchall()[:10]
     return render_template('index.html',tags=tags)
 
+# Handling about page
 @app.route('/about.html')
 def about_page():
     return render_template('about.html')
 
+# Handling contact page
 @app.route('/contact.html')
 def contact_page():
     return render_template('contact.html')
 
+# Handling listings_single page
 @app.route('/listings_single.html')
 def listings_single():
     pid = request.args.get('id')
@@ -67,6 +79,7 @@ def listings_single():
     print(complaints)
     return render_template('listings_single.html', images = images, data = data, tags = tags, places = places,prop_id=pid, complaints= complaints)
 
+# To process login
 @app.route('/process_login',methods=['POST'])
 def process_login():
     if request.method == 'POST':
@@ -88,7 +101,8 @@ def process_login():
         else:
             print('Failure: invalid username')
             return redirect(url_for('login'))
-            
+        
+# Handling listings page
 @app.route('/listings.html')
 def listings():
     data = db.query('properties')
@@ -110,29 +124,35 @@ def listings():
     print(data)
     return render_template('listings.html', data = data[::-1])
 
+# Handling login page
 @app.route('/login.html')
 def login():
     return render_template('login.html')
 
+# Handling post-ad page
 @app.route('/post-ad.html')
 def post_ad_page():
     if('username' in session):
         return render_template('post-ad.html')
     else:
         return redirect(url_for('login'))
-    
+
+# Handling advanced_filter page
 @app.route('/advanced_filter.html')
 def advanced_filter():
     db.cursor.execute("select tag,count(tag) from tags group by tag")
     tags = db.cursor.fetchall()[:10]
     return render_template('advanced_filter.html',tags=tags,place_types=map.MapServices().place_types)
 
+# To process advanced_filter
 @app.route('/process_advanced_filter',methods=['POST'])
 def process_advanced_filter():
     data = request.form
     print(data)
-    basicFilter = filter.Filter()
-    properties = basicFilter.basic_filter(data,db)
+    filter_1=Filter1()
+    abstraction_imp=Abstraction(filter_1)
+    properties = abstraction_imp.operation(data,db)
+
     print(properties)
     tags = db.query('tags')
     #print(tags)
@@ -152,8 +172,7 @@ def process_advanced_filter():
         elem['images'] = d2[elem['pid']]
     return render_template('listings.html', data = properties[::-1])
 
-    
-
+# To handle image uploads
 @app.route('/upload', methods=['POST'])
 def handle_upload():
     pid = db.query('properties',cols=['max(pid)'])
@@ -170,10 +189,12 @@ def handle_upload():
     print('NNNNOOOOO')
     return '', 204
 
+# Handling register page
 @app.route('/register.html')
 def register_page():
     return render_template('register.html')
 
+# Handling username check
 @app.route('/check_username_taken')
 def sql_object():
     name = request.args.get('user')
@@ -184,15 +205,23 @@ def sql_object():
         res["exists"] = True
     return jsonify(res)
 
+# Handling forums page
 @app.route('/news.html')
 def news():
     questions = db.query('questions')
-    return render_template('news.html',questions=questions)
+    d = defaultdict(list)
+    for question in questions:
+        d[question['qid']] = len(db.query('comments',qid=question['qid']))
+    for question in questions:
+        question['comments'] = d[question['qid']]
+    return render_template('news.html',questions=questions[::-1])
 
+# Handling question page
 @app.route('/question.html')
 def question_page():
     return render_template('question.html')
 
+# Handling discussion page
 @app.route('/discuss.html')
 def discuss_page():
     qid = request.args.get('qid')
@@ -201,20 +230,22 @@ def discuss_page():
     comments = db.query('comments',qid=qid)
     return render_template('discuss.html',question=question,comments=comments)
 
+# Handling question posting processing
 @app.route('/process_question',methods=['POST'])
 def process_question():
     data = request.form
     db.insert('questions',username=session['username'],title=data['title'],body=data['description'],category=data['category'])
-    return redirect(url_for('question_page'))
+    max_qid = db.query('questions',cols=['max(qid)'])[0]['max']
+    return redirect(url_for('discuss_page',qid=max_qid))
 
-
+#  Handling comment posting processing
 @app.route('/process_comment',methods=['POST'])
 def process_comment():
     data = request.form
     db.insert('comments',username=session['username'],body=data['comment'],qid=data['qid'])
     return redirect(url_for('discuss_page',qid=data['qid']))
 
-
+# Handling price estimation page
 @app.route('/reco.html',methods=['GET','POST'])
 def reco():
     if request.method == 'POST':
@@ -231,10 +262,12 @@ def reco():
     else:
         return render_template('reco.html')
 
+# Handling vastu page
 @app.route('/vastu.html')
 def vastu():
 	return render_template('vastu.html')
 
+# Handling post ad processing
 @app.route('/process_post_ad', methods=['POST'])
 def process_post_ad():
     data = request.form
@@ -254,12 +287,14 @@ def process_post_ad():
     db.insert_from_dict_and_kw('property_analytics',generate_property_analytics_dict(map_services.places,map_services.distances),pid=pid,green_cover=img_processor.green_percent)
     return redirect(url_for('listings'))
 
+# Handling filtering properties 
 @app.route('/filtering_properties',methods=['POST'])
 def filtering_properties():
     data = request.form
     print(data)
-    basicFilter = filter.Filter()
-    properties = basicFilter.basic_filter(data,db)
+    filter_1=Filter1()
+    abstraction_imp=Abstraction(filter_1)
+    properties = abstraction_imp.operation(data,db)
     print(properties)
     tags = db.query('tags')
     #print(tags)
@@ -277,6 +312,7 @@ def filtering_properties():
         elem['images'] = d2[elem['pid']]
     return render_template('listings.html', data = properties[::-1])
 
+# Handling filtering tags 
 @app.route('/filter_tags')
 def filter_tags():
     tag = request.args.get('tag')
@@ -301,7 +337,8 @@ def filter_tags():
         elem['tags'] = d1[elem['pid']]
         elem['images'] = d2[elem['pid']]
     return render_template('listings.html', data = properties[::-1])
-    
+ 
+# Handling traffic distance metrics calculation
 @app.route('/traffic',methods=['POST'])
 def get_traffic_details():
     data = request.form
@@ -309,12 +346,25 @@ def get_traffic_details():
     traffic_details = m.get_distance_metrics(data['origin'],data['destination'])
     return ' '.join([traffic_details[0],traffic_details[1]])
 
+# Handling requests on property ads
 @app.route('/process_request',methods=['POST'])
 def process_request():
     data = request.form
     db.insert('request',username=session['username'],pid=data['pid'],visit=data['visit'],message=data['message'])
+    user = db.query('users',username=session['username'])
+    user_email= user[0]["email"]
+    user_phone= user[0]["phone"]
+    user_firstname=user[0]["firstname"]
+    user_lastname=user[0]["lastname"]
+    owner=db.query('properties', pid=data['pid'])
+    owner_username= owner[0]["username"]
+    owner_details=db.query('users',username=owner_username)
+    msg="New Message: "+ data['message']+"from user:"+user_firstname+ " "+user_lastname+" with number "+ user_phone +"and preference to site visit as: "+ data['visit']
+    send_msg=Message(msg,sender=user_email, recipients=[owner_details[0]["email"]])
+    mail.send(send_msg)
     return redirect(url_for('listings'))
 
+# Handling logging out
 @app.route('/logout')
 def logout():
     session.pop('username', None)
